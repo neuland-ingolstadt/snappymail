@@ -1,7 +1,7 @@
 # Inspired by the original Rainloop dockerfile from youtous on GitLab
 FROM php:8.1-fpm-bullseye
 
-ARG FILES_ZIP
+ARG VERSION
 
 
 
@@ -36,12 +36,12 @@ RUN php -m && \
 
 # Install snappymail
 WORKDIR /tmp
-COPY ${FILES_ZIP} .
 RUN mkdir /snappymail && \
-    unzip -q ${FILES_ZIP} -d /snappymail && \
+    wget "https://github.com/the-djmaze/snappymail/releases/download/v${VERSION}/snappymail-${VERSION}.zip" && \
+    unzip -q snappymail-${VERSION}.zip -d /snappymail && \
     find /snappymail -type d -exec chmod 755 {} \; && \
     find /snappymail -type f -exec chmod 644 {} \; && \
-    rm -rf ${FILES_ZIP}
+    rm -rf snappymail-${VERSION}.zip
 
 # Install other content
 COPY files /
